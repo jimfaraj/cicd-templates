@@ -1,15 +1,13 @@
-name: Template Pipeline
-
 on:
-  workflow_call:  # The workflow will be called by other repositories
+  workflow_call:
     inputs:
       repo:
         type: string
-        description: 'The Docker Repository name to push to'
+        description: The Docker Repository name to push to
         required: true
       tag:
         type: string
-        description: 'The Docker Tag to push to'
+        description: The Docker Tag to push to
         required: true
     secrets:
       DOCKERHUB_USERNAME:
@@ -17,6 +15,8 @@ on:
       DOCKERHUB_TOKEN:
         required: true
       SSH_PRIVATE_KEY:
+        required: true
+      HOST:
         required: true
 
 jobs:
@@ -29,9 +29,10 @@ jobs:
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and Push to Dockerhub
-        run: |
-          docker build -t {{ secrets.DOCKERHUB_USERNAME }}/${{ inputs.repo }}:${{ inputs.tag }} .
+      - name: Build Image
+        run: docker build -t {{ secrets.DOCKERHUB_USERNAME }}/${{ inputs.repo }}:${{ inputs.tag }} .
+
+      - name: Push Image
           docker push {{ secrets.DOCKERHUB_USERNAME }}/${{ inputs.repo }}:${{ inputs.tag }}          
 
   deploy:
@@ -44,6 +45,5 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ciuser
           port: 22
-          script: docker pull jimfaraj/${{ inputs.repo }}:${{ inputs.tag }}
+          script: docker pull {{ secrets.DOCKERHUB_USERNAME }}/${{ inputs.repo }}:${{ inputs.tag }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-
