@@ -43,7 +43,7 @@ jobs:
         with:
           host: "132.145.62.69"
           username: ciuser
-          port: 80
+          port: 22
           script: docker pull jimfaraj/${{ inputs.repo }}:${{ inputs.tag }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
 
