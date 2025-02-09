@@ -16,6 +16,8 @@ on:
         required: true
       DOCKERHUB_TOKEN:
         required: true
+      SSH_PRIVATE_KEY:
+        required: true
 
 jobs:
   build:
