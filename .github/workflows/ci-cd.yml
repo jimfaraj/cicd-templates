@@ -38,7 +38,7 @@ jobs:
     steps:
       - name: Pull Image
         run: |
-          ssh ciuser@132.145.62.69
+          ssh -t ciuser@132.145.62.69
           docker pull jimfaraj/${{ inputs.repo }}:${{ inputs.tag }}
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
