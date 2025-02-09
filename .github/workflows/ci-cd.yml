@@ -1,0 +1,32 @@
+name: Template Pipeline
+
+on:
+  workflow_call:  # The workflow will be called by other repositories
+    inputs:
+      repo:
+        type: string
+        description: 'The Docker Repository name to push to'
+        required: true
+      tag:
+        type: string
+        description: 'The Docker Tag to push to'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      docker_repo_tag: ${{ inputs.node-version }}:${{ inputs.node-version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push to Dockerhub
+        run: docker build -t jimfaraj/${{ docker_repo_tag }} .
+          
+      - name: Push to Dockerhub
+        run: docker push jimfaraj/${{ docker_repo_tag }}
+          
