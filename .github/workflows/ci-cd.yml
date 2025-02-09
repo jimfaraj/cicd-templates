@@ -31,3 +31,15 @@ jobs:
         run: |
           docker build -t jimfaraj/${{ inputs.repo }}:${{ inputs.tag }} .
           docker push jimfaraj/${{ inputs.repo }}:${{ inputs.tag }}          
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pull Image
+        run: |
+          ssh ciuser@132.145.62.69
+          docker pull jimfaraj/${{ inputs.repo }}:${{ inputs.tag }}
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
