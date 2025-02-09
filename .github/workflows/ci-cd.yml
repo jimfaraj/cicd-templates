@@ -11,6 +11,11 @@ on:
         type: string
         description: 'The Docker Tag to push to'
         required: true
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
 
 jobs:
   build:
