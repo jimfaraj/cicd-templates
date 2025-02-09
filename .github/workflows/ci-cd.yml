@@ -29,5 +29,5 @@ jobs:
 
       - name: Build and Push to Dockerhub
         run: |
-          docker build -t ${{ inputs.repo }}:${{ inputs.tag }} .
+          docker build -t jimfaraj/${{ inputs.repo }}:${{ inputs.tag }} .
           docker push jimfaraj/${{ inputs.repo }}:${{ inputs.tag }}          
