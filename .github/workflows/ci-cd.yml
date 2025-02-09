@@ -37,9 +37,12 @@ jobs:
 
     steps:
       - name: Pull Image
-        run: |
-          ssh -t ciuser@132.145.62.69
-          docker pull jimfaraj/${{ inputs.repo }}:${{ inputs.tag }}
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: "132.145.62.69"
+          username: ciuser
+          password: ${{ secrets.PASSWORD }}
+          port: 80
+          script: docker pull jimfaraj/${{ inputs.repo }}:${{ inputs.tag }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
 
